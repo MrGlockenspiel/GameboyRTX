@@ -30,8 +30,19 @@ const bool colortex5MipmapEnabled = true;
 #include "../../lib/debug.glsl"
 #include "../../lib/exit.glsl"
 #include "../../lib/Tonemap.glsl"
-#include "../../lib/Utility.glsl"
+#include "../../lib/utility.glsl"
 
+// 0 = none, 1 = bars, 2 = fullscreen gameboy, 3 = normal gameboy
+#define OVERLAY_METHOD 2   // Enable and change overlays [0 1 2 3]
+
+vec3 darkestGreen = vec3(15.0f, 56.0f, 15.0f) / 255.0f;
+vec3 darkGreen = vec3(48.0f, 98.0f, 48.0f) / 255.0f;
+vec3 lightGreen = vec3(139.0f, 172.0f, 15.0f) / 255.0f;
+vec3 lightestGreen = vec3(155.0f, 188.0f, 15.0f) / 255.0f;
+
+vec2 resolution = vec2(viewWidth, viewHeight);
+vec2 GBRes = vec2(160.0f, 144.0f);
+float pixelSize = resolution.y / GBRes.y;
 
 /***********************************************************************/
 /* Text Rendering */
@@ -130,6 +141,14 @@ float DrawFloat(float val, inout vec2 anchor, vec2 charSize, int negPlaces, vec2
 	ret += DrawInt(part, anchor, charSize, uv);
 	
 	return ret;
+}
+
+float roundToNearest(float number, float nearest) {
+	return floor(number / nearest) * nearest;
+}
+
+float avgVec3(vec3 vector) {
+	return (vector.x + vector.y + vector.z) * 0.33333; 
 }
 
 void DrawDebugText() {
@@ -318,6 +337,8 @@ vec3 MotionBlur(vec3 color) {
 #define DRAW_DEBUG_VALUE
 
 void main() {
+	texcoord = vec2(floor(texcoord.x / ((pixelSize / resolution.x))) * ((pixelSize / resolution.x)), floor(texcoord.y / (1.0f / GBRes.y)) * (1.0f / GBRes.y));
+	
 	vec4 lookup = texture(colortex5, texcoord);
 	// vec3 color = texture(colortex5, texcoord).rgb;
 	vec3 color = lookup.rgb;
@@ -335,6 +356,18 @@ void main() {
 	color = GetBloom(colortex3, color);
 	
 	color = Tonemap(color);
+	
+	float brightness = avgVec3(color.rgb);
+
+	if(brightness <= 0.25f) {
+		color.rgb = darkestGreen;
+	} else if(brightness <= 0.5f) {
+		color.rgb = darkGreen;
+	} else if(brightness <= 0.75f) {
+		color.rgb = lightGreen;
+	} else {
+		color.rgb = lightestGreen;
+	}
 	
 	gl_FragColor.rgb = color;
 	
