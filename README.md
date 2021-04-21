@@ -1,4 +1,8 @@
-## Octray
+## Gameboy RTX
+An edit of Octray with ENHANCED GRAPHICS
+
+
+## Original Octray README:
 ![Image](https://cdn.discordapp.com/attachments/254127148913262593/730198439706755153/wide.jpg)
 
 Octray is an experimental raytraced shaderpack for Minecraft/Optifine.
