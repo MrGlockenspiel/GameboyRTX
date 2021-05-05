@@ -20,7 +20,7 @@ uniform float frameTimeCounter;
 uniform int   frameCounter;
 uniform int   hideGUI;
 uniform float viewWidth;
-unifrom float viewHeight;
+uniform float viewHeight;
 
 vec2 texcoord = gl_FragCoord.xy / viewSize * MC_RENDER_QUALITY;
 
