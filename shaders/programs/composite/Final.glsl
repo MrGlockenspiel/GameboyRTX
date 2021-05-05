@@ -19,6 +19,8 @@ uniform vec2  viewSize;
 uniform float frameTimeCounter;
 uniform int   frameCounter;
 uniform int   hideGUI;
+uniform float viewWidth;
+unifrom float viewHeight;
 
 vec2 texcoord = gl_FragCoord.xy / viewSize * MC_RENDER_QUALITY;
 
@@ -40,9 +42,9 @@ vec3 darkGreen = vec3(48.0f, 98.0f, 48.0f) / 255.0f;
 vec3 lightGreen = vec3(139.0f, 172.0f, 15.0f) / 255.0f;
 vec3 lightestGreen = vec3(155.0f, 188.0f, 15.0f) / 255.0f;
 
-vec2 resolution = vec2(viewWidth, viewHeight);
-vec2 GBRes = vec2(160.0f, 144.0f);
-float pixelSize = resolution.y / GBRes.y;
+//vec2 resolution = vec2(viewWidth, viewHeight);
+//vec2 GBRes = vec2(160.0f, 144.0f);
+//float pixelSize = resolution.y / GBRes.y;
 
 /***********************************************************************/
 /* Text Rendering */
@@ -337,7 +339,7 @@ vec3 MotionBlur(vec3 color) {
 #define DRAW_DEBUG_VALUE
 
 void main() {
-	texcoord = vec2(floor(texcoord.x / ((pixelSize / resolution.x))) * ((pixelSize / resolution.x)), floor(texcoord.y / (1.0f / GBRes.y)) * (1.0f / GBRes.y));
+	//texcoord = vec2(floor(texcoord.x / ((pixelSize / resolution.x))) * ((pixelSize / resolution.x)), floor(texcoord.y / (1.0f / GBRes.y)) * (1.0f / GBRes.y));
 	
 	vec4 lookup = texture(colortex5, texcoord);
 	// vec3 color = texture(colortex5, texcoord).rgb;
